@@ -24,10 +24,10 @@ def _transactions_to_dataframe(transactions: List[Transaction]) -> pd.DataFrame:
     df = pd.DataFrame(rows)
     df["date"] = pd.to_datetime(df["date"])
     return df
-=======
+
 from services.behavior_engine import classify_behavior as classify_behavior_v2
 from services.tx_utils import transactions_to_dataframe
->>>>>>> e8bc353 (Updated backend, frontend, analytics, alerts, and insights features)
+
 
 
 def compute_core_metrics(
