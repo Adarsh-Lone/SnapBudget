@@ -44,9 +44,6 @@ class Transaction(db.Model):
     is_recurring = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-<<<<<<< HEAD
-=======
-
 class Profile(db.Model):
     """
     1:1 with User. Uses users.id as the primary key.
@@ -66,4 +63,3 @@ class Profile(db.Model):
     profile_picture_url = db.Column(db.String(255), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
->>>>>>> e8bc353 (Updated backend, frontend, analytics, alerts, and insights features)
