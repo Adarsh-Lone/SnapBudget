@@ -128,16 +128,35 @@ function App() {
   const [behavior, setBehavior] = useState(null);
   const [predictions, setPredictions] = useState(null);
   const [insights, setInsights] = useState([]);
+  const [backendError, setBackendError] = useState(null);
 
   const loadCore = async () => {
-    const [summaryRes, txRes] = await Promise.all([
-      fetch(`${API_BASE}/api/analytics/summary?user_id=1`),
-      fetch(`${API_BASE}/api/transactions?user_id=1`),
-    ]);
-    const summaryJson = await summaryRes.json();
-    const txJson = await txRes.json();
-    setSummary(summaryJson);
-    setTransactions(txJson.transactions || []);
+    try {
+      const [summaryRes, txRes] = await Promise.all([
+        fetch(`${API_BASE}/api/analytics/summary?user_id=1`),
+        fetch(`${API_BASE}/api/transactions?user_id=1`),
+      ]);
+
+      if (!summaryRes.ok || !txRes.ok) {
+        throw new Error(
+          `Backend returned error: summary=${summaryRes.status}, tx=${txRes.status}`
+        );
+      }
+
+      const summaryJson = await summaryRes.json();
+      const txJson = await txRes.json();
+
+      setSummary(summaryJson);
+      setTransactions(txJson.transactions || []);
+      setBackendError(null);
+    } catch (err) {
+      console.error("Failed to load core data", err);
+      setBackendError(
+        "Could not reach backend API. Make sure the Flask server is running on http://localhost:5000."
+      );
+      setSummary(null);
+      setTransactions([]);
+    }
   };
 
   const loadAdvanced = async () => {
@@ -233,6 +252,21 @@ function App() {
   return (
     <Router>
       <AppShell>
+        {backendError && (
+          <div
+            style={{
+              margin: "8px 16px 0",
+              padding: "8px 12px",
+              borderRadius: 8,
+              background: "rgba(248,113,113,0.14)",
+              border: "1px solid rgba(248,113,113,0.6)",
+              color: "#fecaca",
+              fontSize: 12,
+            }}
+          >
+            {backendError}
+          </div>
+        )}
         <Routes>
           <Route
             path="/"

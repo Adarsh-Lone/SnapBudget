@@ -14,6 +14,15 @@ def create_app() -> Flask:
 
     init_extensions(app)
 
+    # Ensure database tables exist (works for both SQLite fallback and MySQL).
+    with app.app_context():
+        try:
+            db.create_all()
+        except Exception as exc:  # noqa: BLE001
+            # Don't prevent the app from starting if DB is misconfigured;
+            # individual requests will surface errors instead.
+            print("WARNING: db.create_all() failed:", repr(exc))
+
     app.register_blueprint(transactions_bp)
     app.register_blueprint(analytics_bp)
     app.register_blueprint(profile_bp)
@@ -56,7 +65,15 @@ def create_app() -> Flask:
 if __name__ == "__main__":
     app = create_app()
 
+    # Try a lightweight DB connectivity check, but don't crash the whole app
+    # if credentials / DB are misconfigured. This makes it easier to at least
+    # start the server and then fix DB settings.
     with app.app_context():
-        db.session.execute(text("SELECT 1"))
+        try:
+            db.session.execute(text("SELECT 1"))
+        except Exception as exc:  # noqa: BLE001
+            # Log the error to stdout; requests to DB-backed endpoints will
+            # still surface errors until configuration is fixed.
+            print("WARNING: Database connectivity test failed:", repr(exc))
 
     app.run(host="0.0.0.0", port=5000, debug=True)

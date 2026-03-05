@@ -3,6 +3,8 @@ python-dotenv==1.0.1
 mysql-connector-python==9.0.0
 SQLAlchemy==2.0.29
 Flask-Cors==4.0.1
+Flask-SQLAlchemy==3.1.1
+opencv-python==4.9.0.80
 numpy==1.26.4
 pandas==2.2.1
 pytesseract==0.3.10
