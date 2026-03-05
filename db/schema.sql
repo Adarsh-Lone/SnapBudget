@@ -36,3 +36,16 @@ CREATE TABLE IF NOT EXISTS transactions (
   FOREIGN KEY (account_id) REFERENCES accounts(id)
 );
 
+-- USER PROFILE (1:1 with users; uses users.id as primary key)
+CREATE TABLE IF NOT EXISTS profile (
+  id INT PRIMARY KEY,
+  income DECIMAL(15,2) DEFAULT 0,
+  fixed_expenses TEXT NULL, -- JSON string: [{"name":"Rent","amount":12000}, ...]
+  monthly_limit DECIMAL(15,2) DEFAULT 0,
+  savings_goal DECIMAL(15,2) DEFAULT 0,
+  currency VARCHAR(10) DEFAULT 'INR',
+  profile_picture_url VARCHAR(255) NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (id) REFERENCES users(id)
+);

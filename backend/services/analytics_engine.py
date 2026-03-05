@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 
 from models import Transaction, Account
+<<<<<<< HEAD
 
 
 def _transactions_to_dataframe(transactions: List[Transaction]) -> pd.DataFrame:
@@ -23,6 +24,10 @@ def _transactions_to_dataframe(transactions: List[Transaction]) -> pd.DataFrame:
     df = pd.DataFrame(rows)
     df["date"] = pd.to_datetime(df["date"])
     return df
+=======
+from services.behavior_engine import classify_behavior as classify_behavior_v2
+from services.tx_utils import transactions_to_dataframe
+>>>>>>> e8bc353 (Updated backend, frontend, analytics, alerts, and insights features)
 
 
 def compute_core_metrics(
@@ -30,7 +35,11 @@ def compute_core_metrics(
     transactions: List[Transaction],
     accounts: List[Account],
 ) -> Dict:
+<<<<<<< HEAD
     df = _transactions_to_dataframe(transactions)
+=======
+    df = transactions_to_dataframe(transactions)
+>>>>>>> e8bc353 (Updated backend, frontend, analytics, alerts, and insights features)
     if df.empty:
         return {
             "avg_daily_spend": 0.0,
@@ -40,7 +49,11 @@ def compute_core_metrics(
             "current_month_spend": 0.0,
             "previous_month_spend": 0.0,
             "stress_date": None,
+<<<<<<< HEAD
             "behavior_tag": "Stable Planner",
+=======
+            "behavior_tag": "Balanced",
+>>>>>>> e8bc353 (Updated backend, frontend, analytics, alerts, and insights features)
         }
 
     daily = df.groupby(df["date"].dt.date)["amount"].sum().sort_index()
@@ -72,7 +85,12 @@ def compute_core_metrics(
         stress_dt = today + timedelta(days=int(survival_days))
         stress_date = stress_dt.isoformat()
 
+<<<<<<< HEAD
     behavior_tag = classify_behavior(df, avg_daily_spend, spending_volatility)
+=======
+    # Improved behavior tags; still returns a single string field (API-compatible)
+    behavior_tag = classify_behavior_v2(df).tag
+>>>>>>> e8bc353 (Updated backend, frontend, analytics, alerts, and insights features)
 
     return {
         "avg_daily_spend": round(avg_daily_spend, 2),
@@ -85,6 +103,7 @@ def compute_core_metrics(
         "behavior_tag": behavior_tag,
     }
 
+<<<<<<< HEAD
 
 def classify_behavior(
     df: pd.DataFrame, avg_daily_spend: float, spending_volatility: float
@@ -105,3 +124,5 @@ def classify_behavior(
 
     return "Stable Planner"
 
+=======
+>>>>>>> e8bc353 (Updated backend, frontend, analytics, alerts, and insights features)

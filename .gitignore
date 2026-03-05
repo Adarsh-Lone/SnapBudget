@@ -1,5 +1,16 @@
+<<<<<<< HEAD
 __pycache__/
 *.pyc
 venv/
 .env
 node_modules/
+=======
+venv/
+__pycache__/
+*.pyc
+node_modules/
+.env
+.DS_Store
+.vscode/
+.idea/
+>>>>>>> e8bc353 (Updated backend, frontend, analytics, alerts, and insights features)

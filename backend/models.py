@@ -44,3 +44,26 @@ class Transaction(db.Model):
     is_recurring = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
+<<<<<<< HEAD
+=======
+
+class Profile(db.Model):
+    """
+    1:1 with User. Uses users.id as the primary key.
+
+    fixed_expenses is stored as a JSON string for portability:
+      [{"name":"Rent","amount":25000}, {"name":"EMI","amount":12000}]
+    """
+
+    __tablename__ = "profile"
+
+    id = db.Column(db.Integer, db.ForeignKey("users.id"), primary_key=True)
+    income = db.Column(db.Numeric(15, 2), default=0)
+    fixed_expenses = db.Column(db.Text, nullable=True)
+    monthly_limit = db.Column(db.Numeric(15, 2), default=0)
+    savings_goal = db.Column(db.Numeric(15, 2), default=0)
+    currency = db.Column(db.String(10), default="INR")
+    profile_picture_url = db.Column(db.String(255), nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+>>>>>>> e8bc353 (Updated backend, frontend, analytics, alerts, and insights features)
