@@ -65,15 +65,11 @@ def create_app() -> Flask:
 if __name__ == "__main__":
     app = create_app()
 
-    # Try a lightweight DB connectivity check, but don't crash the whole app
-    # if credentials / DB are misconfigured. This makes it easier to at least
-    # start the server and then fix DB settings.
+    # Try a lightweight DB connectivity check
     with app.app_context():
         try:
             db.session.execute(text("SELECT 1"))
-        except Exception as exc:  # noqa: BLE001
-            # Log the error to stdout; requests to DB-backed endpoints will
-            # still surface errors until configuration is fixed.
+        except Exception as exc:
             print("WARNING: Database connectivity test failed:", repr(exc))
 
     app.run(host="0.0.0.0", port=5000, debug=True)
